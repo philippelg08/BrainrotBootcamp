@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainrot Bootcamp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="title-screen" class="screen">
+    <h1 class="title">Brainrot Bootcamp</h1>
+
+    <img src="assets/general.png" alt="General" class="general">
+
+    <p class="speech">
+        Welcome to Brainrot Bootcamp!<br>
+        What's your name, recruit?
+    </p>
+
+    <div class="input-group">
+        <input type="text" id="name-input" place-holder="Enter your name">
+        <button id="start-btn">Enlist</button>
+    </div>
+    </div>
+
+    <div id="game" class="screen hidden"></div>
+
+    <div id="map-game" class="game-screen hidden">
+        <div id="scoreboard">Score: <span id="score">0</span></div>
+        <object id="us-map" type="image/svg+xml" data="assets/usa.svg"></object>
+        <p class="instructions">Click on Ohio!</p>
+      </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
