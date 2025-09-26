@@ -67,3 +67,55 @@ body {
   .hidden {
     display: none;
   }
+
+  #map-game {
+    position: relative;
+    text-align:center;
+  }
+
+  #scoreboard {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .instructions {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+  #feedback-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+#feedback-box.visible {
+    opacity: 1;
+}
+
+#feedback-box.correct {
+    background-color: #4CAF50; 
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.8); 
+}
+
+#feedback-box.wrong {
+    background-color: #f44336; 
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); 
+}
