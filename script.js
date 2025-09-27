@@ -64,6 +64,31 @@ function displayFeedback(message, type = 'correct', duration = 4000) {
     }, duration);
 }
 
+function startTimer(duration, display, onTimeUp) {
+    let timeLeft = duration;
+    display.textContent = `Time: ${timeLeft}`;
+    
+    const interval = setInterval(() => {
+        timeLeft--;
+        display.textContent = `Time: ${timeLeft}`;
+
+        if (timeLeft <= 5 && timeLeft > 0) {
+            display.classList.add('timer-dramatic');
+        } else {
+            display.classList.remove('timer-dramatic');
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            display.classList.remove('timer-dramatic');
+            if (onTimeUp) onTimeUp();
+        }
+    }, 1000);
+
+    return interval;
+}
+
+
 function loadOhioGame() {
     gameContent.textContent = "";
 
@@ -87,6 +112,11 @@ function loadOhioGame() {
     object.type = "image/svg+xml";
     object.data = "assets/us.svg";
 
+    object.style.width = "600px";   
+    object.style.height = "auto";   
+    object.style.display = "block"; 
+    object.style.margin = "0 auto"; 
+
     // Add elements in order
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
@@ -94,16 +124,10 @@ function loadOhioGame() {
     gameContent.appendChild(instructions);
     gameContent.appendChild(object);
 
-    let gameTime = 15;
-    const gameTimer = setInterval(() => {
-        gameTime--;
-        timerBox.textContent = `Time: ${gameTime}`;
-        if (gameTime <= 0) {
-            clearInterval(gameTimer);
-            displayFeedback("⏰ Time's up!", "wrong");
-            setTimeout(() => loadKneeSurgeryGame(), 1000);
-        }
-    }, 1000);
+    const timer = startTimer(15, timerBox, () => {
+        displayFeedback("⏰ Time's up!", "wrong");
+        setTimeout(() => loadKneeSurgeryGame(), 1000);
+    });
 
     object.addEventListener("load", () => {
         const svgDoc = object.contentDocument;
@@ -129,7 +153,7 @@ function loadOhioGame() {
                     state.style.fill = "green";
                     displayFeedback("✅ Correct! Welcome to Ohio, recruit.", 'correct');
 
-                    clearInterval(gameTimer);
+                    clearInterval(timer);
 
                     // Wait 1.5s so player sees the green highlight
                     setTimeout(() => {
@@ -191,19 +215,11 @@ function loadKneeSurgeryGame() {
         { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  // right knee
     ];
 
-    // Timer
-    let timeLeft = 15;
-    const timerInterval = setInterval(() => {
-        timeLeft--;
-        timerBox.textContent = `Time: ${timeLeft}`;
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            displayFeedback("⏰ Time's up!", "wrong");
-            setTimeout(() => load67Game(), 1000);
-        }
-    }, 1000);
+    const timer = startTimer(15, timerBox, () => {
+        displayFeedback("⏰ Time's up!", "wrong");
+        setTimeout(() => load67Game(), 1000);
+    });
 
-    // Click detection
     bodyImg.addEventListener("click", (e) => {
         const rect = bodyImg.getBoundingClientRect();
         const clickX = (e.clientX - rect.left) / rect.width;
@@ -220,7 +236,7 @@ function loadKneeSurgeryGame() {
             score += 500;
             scoreboard.textContent = `Aura🔥: ${score}`;
             displayFeedback("✅ Correct! Bro needs knee surgery", "correct", 2500);
-            clearInterval(timerInterval);
+            clearInterval(timer);
             setTimeout(() => load67Game(), 2500);
         } else {
             displayFeedback("❌ Wrong! That's not the place", "wrong", 1500);
@@ -246,66 +262,104 @@ function load67Game() {
     instructions.classList.add("instructions");
     instructions.textContent = "You know what to click.";
 
-    // Container
     const container = document.createElement("div");
     container.style.position = "relative";
-    container.style.display = "inline-block";
+    container.style.width = "50vw";       
+    container.style.height = "50vh";     
+    container.style.margin = "0 auto";  
+    container.style.border = "2px solid #222";
+    container.style.overflow = "hidden";
+    container.style.background = "#f0f0f0";
+    container.style.cursor = "pointer";
 
-    // Body image
-    const bodyImg = document.createElement("img");
-    bodyImg.src = "assets/body.png";
-    bodyImg.alt = "Body Outline";
-    bodyImg.id = "body-img";
-    bodyImg.style.width = "250px";
-    bodyImg.style.height = "auto";
-    bodyImg.style.cursor = "pointer";
-
-    container.appendChild(bodyImg); // append body first
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
     gameContent.appendChild(timerBox);
     gameContent.appendChild(instructions);
     gameContent.appendChild(container);
 
-    // Knee targets in percentages
-    const kneeTargets = [
-        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 }, // left knee
-        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  // right knee
-    ];
-
-    // Timer
-    let timeLeft = 15;
-    const timerInterval = setInterval(() => {
-        timeLeft--;
-        timerBox.textContent = `Time: ${timeLeft}`;
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            displayFeedback("⏰ Time's up!", "wrong");
-            setTimeout(() => load67Game(), 1000);
-        }
-    }, 1000);
-
-    // Click detection
-    bodyImg.addEventListener("click", (e) => {
-        const rect = bodyImg.getBoundingClientRect();
-        const clickX = (e.clientX - rect.left) / rect.width;
-        const clickY = (e.clientY - rect.top) / rect.height;
-
-        const correct = kneeTargets.some(target => {
-            return clickX >= target.x &&
-                   clickX <= target.x + target.width &&
-                   clickY >= target.y &&
-                   clickY <= target.y + target.height;
-        });
-
-        if (correct) {
-            score += 500;
-            scoreboard.textContent = `Aura🔥: ${score}`;
-            displayFeedback("✅ Correct! Bro needs knee surgery", "correct", 2500);
-            clearInterval(timerInterval);
-            setTimeout(() => load67Game(), 2500);
-        } else {
-            displayFeedback("❌ Wrong! That's not the place", "wrong", 1500);
-        }
+    const timer = startTimer(15, timerBox, () => {
+        displayFeedback("⏰ Time's up!", "wrong");
+        setTimeout(() => loadTextGame(), 1000);
     });
-}
+
+    const targetNumbers = [6, 7];
+    let currentIndex = 0;
+
+    const numbers = [];
+    for (let i = 0; i <= 9; i++) {
+        const numDiv = document.createElement("div");
+        numDiv.textContent = i;
+        numDiv.style.position = "absolute";
+        numDiv.style.fontSize = "5rem";     
+        numDiv.style.fontWeight = "bold";
+        numDiv.style.cursor = "pointer";
+    
+        numDiv.style.top = `${Math.random() * (container.clientHeight - 50)}px`;
+        numDiv.style.left = `${Math.random() * (container.clientWidth - 50)}px`;
+    
+        numDiv.vx = (Math.random() - 0.5) * 8; // faster
+        numDiv.vy = (Math.random() - 0.5) * 8;
+    
+        container.appendChild(numDiv);
+        numbers.push(numDiv);
+    
+        numDiv.addEventListener("click", () => {
+            if (i === targetNumbers[currentIndex]) {
+                numDiv.style.animation = "pop 0.5s ease forwards"; 
+                currentIndex++;
+                if (currentIndex === targetNumbers.length) {
+                    score += 500;
+                    scoreboard.textContent = `Aura🔥: ${score}`;
+                    displayFeedback("🎉 Nice one bro", 'correct');
+                    clearInterval(timer);
+                    setTimeout(() => loadTextGame(), 2000);
+                }
+            } else {
+                numDiv.style.animation = "pop 0.5s ease forwards";
+                numDiv.style.color = "red";
+                displayFeedback("❌ Wrong number!", 'wrong');
+                setTimeout(() => numDiv.style.color = "black", 1000);
+            }
+        });
+    }
+    
+    setInterval(() => {
+        numbers.forEach(numDiv => {
+            let top = parseFloat(numDiv.style.top);
+            let left = parseFloat(numDiv.style.left);
+            const width = numDiv.offsetWidth;
+            const height = numDiv.offsetHeight;
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+    
+            // Update position
+            top += numDiv.vy;
+            left += numDiv.vx;
+    
+            // Bounce off edges
+            if (top <= 0) {
+                top = 0;
+                numDiv.vy *= -1;
+            }
+            if (top + height >= containerHeight) {
+                top = containerHeight - height;
+                numDiv.vy *= -1;
+            }
+    
+            if (left <= 0) {
+                left = 0;
+                numDiv.vx *= -1;
+            }
+            if (left + width >= containerWidth) {
+                left = containerWidth - width;
+                numDiv.vx *= -1;
+            }
+    
+            numDiv.style.top = `${top}px`;
+            numDiv.style.left = `${left}px`;
+        });
+    }, 20);
+    
+    
+}    

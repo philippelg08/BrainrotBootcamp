@@ -5,57 +5,74 @@ body {
     background: #f9f9f9;
     color: #222;
 }
-  
+
 .screen {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
     min-height: 100vh;
-    padding-top: 50px; 
+    padding-top: 50px;
 }
-  
-  .title {
+
+.title {
     font-size: 50px;
     font-weight: 700;
     margin-bottom: 20px;
     color: #222;
-  }
-
-  #title-screen {
-    justify-content: center; 
 }
-  
-  .general {
+
+#title-screen {
+    justify-content: center;
+}
+
+.general {
     image-rendering: pixelated;
     width: 200px;
-    margin: 10px 0;
-  }
-  
-  .speech {
+    display: block;
+    margin: 10px auto;
+    transition: transform 0.3s ease;
+    animation: float 2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.speech {
     font-size: 20px;
     margin: 10px auto;
     max-width: 400px;
     line-height: 1.5;
-  }
-  
-  .input-group {
+}
+
+.input-group {
     margin-top: 20px;
     display: flex;
     justify-content: center;
     gap: 10px;
-  }
-  
-  #name-input {
+}
+
+#name-input {
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 6px;
     width: 200px;
-  }
-  
-  button {
+}
+
+button {
     padding: 10px 20px;
     font-size: 1rem;
     background: #4a90e2;
@@ -64,75 +81,131 @@ body {
     color: white;
     cursor: pointer;
     transition: background 0.2s;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
   
   button:hover {
-    background: #357abd;
+    transform: scale(1.1); /* makes it pop out slightly */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3); /* gives it depth */
   }
   
-  .hidden {
+  button:active {
+    transform: scale(0.95); /* quick press down effect */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background: #357abd; /* slightly darker when clicked */
+  }
+
+.hidden {
     display: none;
-  }
+}
 
-  #map-game {
+#map-game {
     position: relative;
-    text-align:center;
-  }
+    text-align: center;
+}
 
-  #scoreboard {
+#scoreboard {
     position: absolute;
     top: 30px;
     right: 50px;
     background: white;
     padding: 8px 12px;
-    border-radius: 8px;
+    border-radius: 15px;
     font-weight: bold;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 
-  .instructions {
+.instructions {
     margin-top: 20px;
     font-size: 18px;
-  }
-
-  #feedback-box {
+}
+#feedback-box {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
-    padding: 20px 40px;
-    border-radius: 8px;
-    font-size: 10px;
+    transform: translate(-50%, -50%);
+    padding: 40px 80px;        
+    border-radius: 16px;         
+    font-size: 24px;            
     font-weight: bold;
     color: white;
     text-align: center;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease;
     z-index: 100;
     pointer-events: none;
-  }
+}
 
 #feedback-box.visible {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
 }
 
 #feedback-box.correct {
-    background-color: #4CAF50; 
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.8); 
+    background-color: #4CAF50;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
 }
 
 #feedback-box.wrong {
-    background-color: #f44336; 
-    box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); 
+    background-color: #f44336;
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
 }
 
 #timer-box {
     position: absolute;
-    top: 10px;
-    left: 20px;
+    top: 30px;
+    left: 50px;
     background: white;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 12px 12px;
+    border-radius: 15px;
     font-weight: bold;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.timer-dramatic {
+    color: red;
+    animation: bounce 0.5s ease infinite alternate;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
 }
