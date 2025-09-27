@@ -145,8 +145,8 @@ function loadGame() {
     topBar.style.display = "flex";
     topBar.style.justifyContent = "space-between";
     topBar.style.alignItems = "center";
-    topBar.style.maxWidth = "600px";
-    topBar.style.margin = "15px auto 20px auto";
+    topBar.style.flexWrap = "wrap";
+    topBar.style.justifyContent = "space-around";
     topBar.style.padding = "0 10px";
 
     const scoreboard = document.createElement("div");
@@ -230,7 +230,8 @@ function loadOhioGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIns
     object.type = "image/svg+xml";
     object.data = "assets/us.svg";
 
-    object.style.width = "600px";
+    object.style.width = "100%";
+    object.style.maxWidth = "600px";
     object.style.height = "auto";
     object.style.display = "block";
     object.style.margin = "0 auto";
@@ -298,7 +299,8 @@ function loadKneeSurgeryGame({ gameContainer, scoreboard, timerBox, feedbackBox,
     bodyImg.src = "assets/body.png";
     bodyImg.alt = "Body Outline";
     bodyImg.id = "body-img";
-    bodyImg.style.width = "250px";
+    bodyImg.style.width = "90%";
+    bodyImg.style.maxWidth = "250px";
     bodyImg.style.height = "auto";
     bodyImg.style.cursor = "pointer";
 
@@ -556,7 +558,8 @@ function loadMewingGame({ gameContainer, scoreboard, timerBox, feedbackBox, setI
     const stage = document.createElement("div");
     stage.id = "text-game-container";
     stage.style.position = "relative";
-    stage.style.width = "600px";
+    stage.style.width = "70%"
+    stage.style.maxWidth = "600px";
     stage.style.margin = "0 auto";
     stage.style.userSelect = "none";
 
