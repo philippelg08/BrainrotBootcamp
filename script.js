@@ -121,10 +121,10 @@ function showEndScreen() {
         score = 0;
 
         gameContent.textContent = "";
-    
+
         titleScreen.classList.remove("hidden");
         gameScreen.classList.add("hidden");
-    
+
         const nameInput = document.getElementById("name-input");
         if (nameInput) nameInput.value = "";
     });
@@ -809,7 +809,7 @@ function loadSlangGame() {
     cardsContainer.style.gridTemplateColumns = "repeat(auto-fit, minmax(200px, 1fr))";
     cardsContainer.style.gap = "15px";
     cardsContainer.style.margin = "20px auto";
-    cardsContainer.style.maxWidth = "500px"; 
+    cardsContainer.style.maxWidth = "500px";
 
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
@@ -825,10 +825,17 @@ function loadSlangGame() {
         }, 1000);
     });
 
+    const sessionTerms = slangTerms.sort(() => Math.random() - 0.5);
+    let currentIndex = 0;
+
     function newRound() {
         cardsContainer.textContent = "";
 
-        const correct = slangTerms[Math.floor(Math.random() * slangTerms.length)];
+        if (currentIndex >= sessionTerms.length) return;
+
+        const correct = sessionTerms[currentIndex];
+        currentIndex++;
+
         question.textContent = correct.word;
 
         let wrongChoices = slangTerms
@@ -853,6 +860,16 @@ function loadSlangGame() {
             card.style.background = "white";
             card.style.transition = "0.3s";
             card.style.minHeight = "80px";
+
+            if (currentIndex >= sessionTerms.length) {
+                clearInterval(timer);
+                displayFeedback("You're insane🔥", "correct", 1000);
+                setTimeout(() => {
+                    if (window.onGameEnd) window.onGameEnd();
+                }, 1000);
+                return;
+            }
+            
 
             card.addEventListener("click", () => {
                 if (option.word === correct.word) {
