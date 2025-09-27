@@ -5,7 +5,9 @@ const titleScreen = document.getElementById("title-screen");
 const gameScreen = document.getElementById("game");
 const gameContent = document.getElementById("game-content");
 
+
 startBtn.addEventListener("click", () => {
+
     const nameInput = document.getElementById("name-input");
     const name = nameInput.value.trim();
 
@@ -93,6 +95,9 @@ function startTimer(duration, display, onTimeUp) {
 }
 
 function showEndScreen() {
+    const nameInput = document.getElementById("name-input");
+    const name = nameInput.value.trim();
+
     gameContent.textContent = "";
 
     const endScreen = document.createElement("div");
@@ -100,7 +105,7 @@ function showEndScreen() {
     endScreen.style.marginTop = "100px";
 
     const title = document.createElement("h1");
-    title.textContent = "Well done, recruit";
+    title.textContent = `Well done, ${name}`;
 
     const scoreDisplay = document.createElement("p");
     scoreDisplay.textContent = `Your final Aura🔥 score: ${score}`;
@@ -110,19 +115,18 @@ function showEndScreen() {
 
     const playAgainBtn = document.createElement("button");
     playAgainBtn.textContent = "Play Again";
-    playAgainBtn.style.marginTop = "40px";
-    playAgainBtn.style.padding = "15px 30px";
-    playAgainBtn.style.fontSize = "1.2rem";
-    playAgainBtn.style.cursor = "pointer";
-    playAgainBtn.style.borderRadius = "10px";
-    playAgainBtn.style.border = "none";
-    playAgainBtn.style.background = "#4CAF50";
-    playAgainBtn.style.color = "white";
+    playAgainBtn.classList.add("play-again-btn");
 
     playAgainBtn.addEventListener("click", () => {
-        score = 0;          
-        gameContent.textContent = ""; 
-        startMiniGameSequence();     
+        score = 0;
+
+        gameContent.textContent = "";
+    
+        titleScreen.classList.remove("hidden");
+        gameScreen.classList.add("hidden");
+    
+        const nameInput = document.getElementById("name-input");
+        if (nameInput) nameInput.value = "";
     });
 
 
@@ -203,8 +207,9 @@ function loadOhioGame() {
     gameContent.appendChild(object);
 
     const timer = startTimer(15, timerBox, () => {
-        displayFeedback("⏰ Time's up!", "wrong");
-        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        displayFeedback("⏰ Time's up!", "wrong", 1000);
+        setTimeout(() => {
+            if (window.onGameEnd) window.onGameEnd();
         }, 1000);
     });
 
@@ -236,7 +241,7 @@ function loadOhioGame() {
 
                     setTimeout(() => {
                         if (window.onGameEnd) window.onGameEnd();
-                    }, 2000);
+                    }, 1000);
 
                 } else {
                     state.style.fill = "red";
@@ -280,7 +285,7 @@ function loadKneeSurgeryGame() {
     bodyImg.style.height = "auto";
     bodyImg.style.cursor = "pointer";
 
-    container.appendChild(bodyImg); 
+    container.appendChild(bodyImg);
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
     gameContent.appendChild(timerBox);
@@ -289,13 +294,14 @@ function loadKneeSurgeryGame() {
 
     // Knee targets in percentages
     const kneeTargets = [
-        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 }, 
-        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  
+        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 },
+        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }
     ];
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("⏰ Time's up!", "wrong", 1000);
-        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        setTimeout(() => {
+            if (window.onGameEnd) window.onGameEnd();
         }, 1000);
     });
 
@@ -316,7 +322,8 @@ function loadKneeSurgeryGame() {
             scoreboard.textContent = `Aura🔥: ${score}`;
             displayFeedback("+500 Aura 🔥", "correct", 1000);
             clearInterval(timer);
-            setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+            setTimeout(() => {
+                if (window.onGameEnd) window.onGameEnd();
             }, 1000);
         } else {
             displayFeedback("❌ Wrong! That's not the place", "wrong", 1000);
@@ -360,7 +367,8 @@ function load67Game() {
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("Time's up", "wrong", 1000);
-        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        setTimeout(() => {
+            if (window.onGameEnd) window.onGameEnd();
         }, 1000);
     });
 
@@ -394,8 +402,9 @@ function load67Game() {
                     scoreboard.textContent = `Aura🔥: ${score}`;
                     displayFeedback("67 🔥", 'correct', 1000);
                     clearInterval(timer);
-                    setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
-                    }, 2000);
+                    setTimeout(() => {
+                        if (window.onGameEnd) window.onGameEnd();
+                    }, 1000);
                 }
             } else {
                 numDiv.style.animation = "pop 0.5s ease forwards";
@@ -513,7 +522,8 @@ function loadTextGame() {
 
     const timer = startTimer(20, timerBox, () => {
         displayFeedback("⏰ Time's up!", "wrong", 1000);
-        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        setTimeout(() => {
+            if (window.onGameEnd) window.onGameEnd();
         }, 1000);
     });
 
@@ -539,14 +549,15 @@ function loadTextGame() {
             score += 200;
             scoreboard.textContent = `Aura🔥: ${score}`;
             input.value = "";
-            displayFeedback("+200 Aura 🔥", "correct", 800);
+            displayFeedback("+200 Aura 🔥", "correct", 500);
             currentAbbrIndex++;
 
             if (currentAbbrIndex >= textAbbreviations.length) {
                 clearInterval(interval);
-                displayFeedback("You're insane 🔥", "correct", 500);
-                setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
-                }, 2000);
+                displayFeedback("You're insane 🔥", "correct", 1000);
+                setTimeout(() => {
+                    if (window.onGameEnd) window.onGameEnd();
+                }, 1000);
             } else {
                 showNextAbbr();
             }
@@ -590,7 +601,8 @@ function loadMewingGame() {
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("You gotta practice your mewing bro", "wrong", 1000);
-        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        setTimeout(() => {
+            if (window.onGameEnd) window.onGameEnd();
         }, 1000);
     });
     const jaw = document.createElement("img");
@@ -696,9 +708,10 @@ function loadMewingGame() {
                     clearInterval(timer);
                     score += 500;
                     scoreboard.textContent = `Aura🔥: ${score}`;
-                    displayFeedback("+500 Aura 🔥", "correct", 2500);
-                    setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
-                    }, 1200);
+                    displayFeedback("+500 Aura 🔥", "correct", 1000);
+                    setTimeout(() => {
+                        if (window.onGameEnd) window.onGameEnd();
+                    }, 1000);
                 }
             }
         }
@@ -750,7 +763,6 @@ function loadSlangGame() {
     gameContent.textContent = "";
 
     const slangTerms = [
-        { word: "Skibidi", meaning: "A nonsense word that can mean anything—good, bad, silly, or cool—depending on the vibe" },
         { word: "Rizz", meaning: "Charm or smooth talking ability, usually when flirting" },
         { word: "Cap", meaning: "A lie or exaggeration" },
         { word: "Bussin", meaning: "Really tasty or amazing (often about food)" },
@@ -769,7 +781,7 @@ function loadSlangGame() {
         { word: "Goated", meaning: "The greatest, legendary, the best" },
         { word: "Simp", meaning: "Someone who overdoes it for their crush or partner" },
         { word: "Crash out", meaning: "Acting reckless or losing control" },
-        { word: "Doomscrolling", meaning: "Endlessly scrolling through bad or depressing news" }
+        { word: "Doomscrolling", meaning: "Endlessly scrolling through reels and tiktoks" }
     ];
 
     const scoreboard = document.createElement("div");
@@ -789,13 +801,15 @@ function loadSlangGame() {
 
     const question = document.createElement("div");
     question.id = "question-container";
+    question.classList.add("question-box");
+
 
     const cardsContainer = document.createElement("div");
-    cardsContainer.id = "cards-container";
     cardsContainer.style.display = "grid";
-    cardsContainer.style.gridTemplateColumns = "1fr 1fr";
+    cardsContainer.style.gridTemplateColumns = "repeat(auto-fit, minmax(200px, 1fr))";
     cardsContainer.style.gap = "15px";
-    cardsContainer.style.marginTop = "20px";
+    cardsContainer.style.margin = "20px auto";
+    cardsContainer.style.maxWidth = "500px"; 
 
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
@@ -806,8 +820,9 @@ function loadSlangGame() {
 
     let timer = startTimer(20, timerBox, () => {
         displayFeedback("Time’s up!", "wrong", 1000);
-        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
-        }, 2000);
+        setTimeout(() => {
+            if (window.onGameEnd) window.onGameEnd();
+        }, 1000);
     });
 
     function newRound() {
@@ -827,10 +842,10 @@ function loadSlangGame() {
             const card = document.createElement("div");
             card.textContent = option.meaning;
             card.classList.add("card");
-            card.style.display = "flex";             
-            card.style.alignItems = "center";        
-            card.style.justifyContent = "center";     
-            card.style.textAlign = "center";  
+            card.style.display = "flex";
+            card.style.alignItems = "center";
+            card.style.justifyContent = "center";
+            card.style.textAlign = "center";
             card.style.padding = "15px";
             card.style.border = "2px solid #333";
             card.style.borderRadius = "10px";
@@ -841,15 +856,15 @@ function loadSlangGame() {
 
             card.addEventListener("click", () => {
                 if (option.word === correct.word) {
-                    card.style.background = "#4CAF50"; 
+                    card.style.background = "#4CAF50";
                     score += 100;
                     scoreboard.textContent = `Aura🔥: ${score}`;
-                    displayFeedback("+100 Aura 🔥", "correct", 1000);
+                    displayFeedback("+100 Aura 🔥", "correct", 500);
                 } else {
                     card.style.background = "#f44336"; // red
                     displayFeedback("Wrong!", "wrong");
                 }
-                setTimeout(newRound, 1000);
+                setTimeout(newRound, 500);
             });
 
             cardsContainer.appendChild(card);
