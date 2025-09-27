@@ -44,11 +44,11 @@ function startCountdown(name) {
         if (countdown > 0) {
             countdownSpan.textContent = countdown;
             countdownSpan.classList.remove("bounce");
-            void countdownSpan.offsetWidth; 
+            void countdownSpan.offsetWidth;
             countdownSpan.classList.add("bounce");
         } else {
             clearInterval(interval);
-            loadOhioGame();
+            loadMewingGame();
         }
     }, 1000);
 }
@@ -71,7 +71,7 @@ function displayFeedback(message, type = 'correct', duration = 4000) {
 function startTimer(duration, display, onTimeUp) {
     let timeLeft = duration;
     display.textContent = `Time: ${timeLeft}`;
-    
+
     const interval = setInterval(() => {
         timeLeft--;
         display.textContent = `Time: ${timeLeft}`;
@@ -116,10 +116,10 @@ function loadOhioGame() {
     object.type = "image/svg+xml";
     object.data = "assets/us.svg";
 
-    object.style.width = "600px";   
-    object.style.height = "auto";   
-    object.style.display = "block"; 
-    object.style.margin = "0 auto"; 
+    object.style.width = "600px";
+    object.style.height = "auto";
+    object.style.display = "block";
+    object.style.margin = "0 auto";
 
     // Add elements in order
     gameContent.appendChild(scoreboard);
@@ -155,7 +155,7 @@ function loadOhioGame() {
                     scoreboard.textContent = `Aura🔥: ${score}`;
 
                     state.style.fill = "green";
-                    displayFeedback("✅ Welcome to Ohio, recruit!", 'correct');
+                    displayFeedback("+500 Aura 🔥", 'correct');
 
                     clearInterval(timer);
 
@@ -231,15 +231,15 @@ function loadKneeSurgeryGame() {
 
         const correct = kneeTargets.some(target => {
             return clickX >= target.x &&
-                   clickX <= target.x + target.width &&
-                   clickY >= target.y &&
-                   clickY <= target.y + target.height;
+                clickX <= target.x + target.width &&
+                clickY >= target.y &&
+                clickY <= target.y + target.height;
         });
 
         if (correct) {
             score += 500;
             scoreboard.textContent = `Aura🔥: ${score}`;
-            displayFeedback("✅ Correct! Bro needs knee surgery", "correct", 2500);
+            displayFeedback("+500 Aura 🔥", "correct", 2500);
             clearInterval(timer);
             setTimeout(() => load67Game(), 2500);
         } else {
@@ -268,9 +268,9 @@ function load67Game() {
 
     const container = document.createElement("div");
     container.style.position = "relative";
-    container.style.width = "50vw";       
-    container.style.height = "50vh";     
-    container.style.margin = "0 auto";  
+    container.style.width = "50vw";
+    container.style.height = "50vh";
+    container.style.margin = "0 auto";
     container.style.border = "2px solid #222";
     container.style.overflow = "hidden";
     container.style.background = "#f0f0f0";
@@ -283,7 +283,7 @@ function load67Game() {
     gameContent.appendChild(container);
 
     const timer = startTimer(15, timerBox, () => {
-        displayFeedback("⏰ Time's up!", "wrong");
+        displayFeedback("+500 Aura 🔥", "wrong");
         setTimeout(() => loadTextGame(), 1000);
     });
 
@@ -295,22 +295,22 @@ function load67Game() {
         const numDiv = document.createElement("div");
         numDiv.textContent = i;
         numDiv.style.position = "absolute";
-        numDiv.style.fontSize = "5rem";     
+        numDiv.style.fontSize = "5rem";
         numDiv.style.fontWeight = "bold";
         numDiv.style.cursor = "pointer";
-    
+
         numDiv.style.top = `${Math.random() * (container.clientHeight - 50)}px`;
         numDiv.style.left = `${Math.random() * (container.clientWidth - 50)}px`;
-    
+
         numDiv.vx = (Math.random() - 0.5) * 8; // faster
         numDiv.vy = (Math.random() - 0.5) * 8;
-    
+
         container.appendChild(numDiv);
         numbers.push(numDiv);
-    
+
         numDiv.addEventListener("click", () => {
             if (i === targetNumbers[currentIndex]) {
-                numDiv.style.animation = "pop 0.5s ease forwards"; 
+                numDiv.style.animation = "pop 0.5s ease forwards";
                 currentIndex++;
                 if (currentIndex === targetNumbers.length) {
                     score += 500;
@@ -327,7 +327,7 @@ function load67Game() {
             }
         });
     }
-    
+
     setInterval(() => {
         numbers.forEach(numDiv => {
             let top = parseFloat(numDiv.style.top);
@@ -336,11 +336,11 @@ function load67Game() {
             const height = numDiv.offsetHeight;
             const containerWidth = container.clientWidth;
             const containerHeight = container.clientHeight;
-    
+
             // Update position
             top += numDiv.vy;
             left += numDiv.vx;
-    
+
             // Bounce off edges
             if (top <= 0) {
                 top = 0;
@@ -350,7 +350,7 @@ function load67Game() {
                 top = containerHeight - height;
                 numDiv.vy *= -1;
             }
-    
+
             if (left <= 0) {
                 left = 0;
                 numDiv.vx *= -1;
@@ -359,13 +359,13 @@ function load67Game() {
                 left = containerWidth - width;
                 numDiv.vx *= -1;
             }
-    
+
             numDiv.style.top = `${top}px`;
             numDiv.style.left = `${left}px`;
         });
     }, 20);
-    
-}    
+
+}
 
 
 function loadTextGame() {
@@ -377,7 +377,7 @@ function loadTextGame() {
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
-    }    
+    }
 
     const textAbbreviations = shuffleArray([
         { abbr: "FYP", full: "For You Page" },
@@ -390,10 +390,10 @@ function loadTextGame() {
         { abbr: "TFW", full: "That feeling when" },
         { abbr: "W", full: "Win" },
         { abbr: "TLDR", full: "Too long didn't read" },
-        { abbr: "pmo", full: ["Piss me off", "Put me on" ]},
+        { abbr: "pmo", full: ["Piss me off", "Put me on"] },
         { abbr: "ICL", full: "I can't lie" },
         { abbr: "ong", full: "On God" },
-        { abbr: "smh", full: ["Shaking my head", "shake my head"]}
+        { abbr: "smh", full: ["Shaking my head", "shake my head"] }
     ]);
 
     const scoreboard = document.createElement("div");
@@ -408,7 +408,11 @@ function loadTextGame() {
 
     const container = document.createElement("div");
     container.id = "text-game-container";
-    
+
+    const instructions = document.createElement("p");
+    instructions.classList.add("instructions");
+    instructions.textContent = "Write out what the abbreviations mean";
+
     const currentAbbr = document.createElement("div");
     currentAbbr.id = "current-abbr";
     currentAbbr.style.fontSize = "2rem";
@@ -428,11 +432,12 @@ function loadTextGame() {
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
     gameContent.appendChild(timerBox);
+    gameContent.appendChild(instructions);
     gameContent.appendChild(container);
 
     const timer = startTimer(20, timerBox, () => {
         displayFeedback("⏰ Time's up!", "wrong");
-        setTimeout(() => loadTextGame(), 1000);
+        setTimeout(() => loadMewingGame(), 1000);
     });
 
     let currentAbbrIndex = 0;
@@ -447,19 +452,23 @@ function loadTextGame() {
 
     input.addEventListener("input", () => {
         const userInput = input.value.trim().toLowerCase();
-        const correctText = textAbbreviations[currentAbbrIndex].full.toLowerCase();
+        const fullValue = textAbbreviations[currentAbbrIndex].full;
+
+        const validAnswers = Array.isArray(fullValue)
+            ? fullValue.map(v => v.toLowerCase())
+            : [fullValue.toLowerCase()];
 
         if (userInput === correctText) {
             score += 200;
             scoreboard.textContent = `Aura🔥: ${score}`;
             input.value = "";
-            displayFeedback("✅ Correct!", "correct", 800);
+            displayFeedback("+200 Aura 🔥", "correct", 800);
             currentAbbrIndex++;
-            
+
             if (currentAbbrIndex >= textAbbreviations.length) {
                 clearInterval(interval);
-                displayFeedback("🎉 All done!", "correct", 2000);
-                setTimeout(() => loadNextGame(), 2000);
+                displayFeedback("You're insane 🔥", "correct", 2000);
+                setTimeout(() => loadMewingGame(), 2000);
             } else {
                 showNextAbbr();
             }
@@ -469,3 +478,190 @@ function loadTextGame() {
         }
     });
 }
+
+function loadMewingGame() {
+    gameContent.textContent = "";
+
+    const scoreboard = document.createElement("div");
+    scoreboard.id = "scoreboard";
+    scoreboard.textContent = `Aura🔥: ${score}`;
+
+    const feedbackBox = document.createElement("div");
+    feedbackBox.id = "feedback-box";
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+
+    const instructions = document.createElement("p");
+    instructions.classList.add("instructions");
+    instructions.textContent = "🤫 x3";
+
+    const stage = document.createElement("div");
+    stage.id = "text-game-container";
+    stage.style.position = "relative";
+    stage.style.width = "600px";
+    stage.style.margin = "0 auto";
+    stage.style.userSelect = "none";
+
+    gameContent.appendChild(scoreboard);
+    gameContent.appendChild(feedbackBox);
+    gameContent.appendChild(timerBox);
+    gameContent.appendChild(instructions);
+    gameContent.appendChild(stage);
+
+    const timer = startTimer(15, timerBox, () => {
+        displayFeedback("You gotta practice your mewing bro", "wrong");
+        setTimeout(() => loadTextGame(), 1000);
+    });
+    const jaw = document.createElement("img");
+    jaw.src = "assets/jaw.png";
+    jaw.alt = "Skull";
+    jaw.style.display = "block";
+    jaw.style.width = "70%";
+    jaw.style.height = "auto";
+    jaw.style.pointerEvents = "none";
+    jaw.style.marginLeft = "60px";
+    stage.appendChild(jaw);
+
+    const sliderLayer = document.createElement("div");
+    sliderLayer.style.position = "absolute";
+    sliderLayer.style.inset = "0";
+    sliderLayer.style.pointerEvents = "none";
+    stage.appendChild(sliderLayer);
+
+    const track = document.createElement("div");
+    track.style.position = "absolute";
+    sliderLayer.appendChild(track);
+
+    const finger = document.createElement("img");
+    finger.src = "assets/finger.png";
+    finger.alt = "Finger";
+    finger.style.position = "absolute";
+    finger.style.width = "90px";
+    finger.style.height = "auto";
+    finger.style.cursor = "grab";
+    finger.style.transform = "translate(-50%, -50%)";
+    stage.appendChild(finger);
+
+    let isDragging = false;
+    let swipeCount = 0;
+
+    function layout() {
+        const stageRect = stage.getBoundingClientRect();
+        const jawRect = jaw.getBoundingClientRect();
+
+        const offsetX = jawRect.left - stageRect.left;
+        const offsetY = jawRect.top - stageRect.top;
+
+        const startX = offsetX + jawRect.width * 0.45;
+        const startY = offsetY + jawRect.height * 1.05;
+
+        const endX = offsetX + jawRect.width * 0.10;
+        const endY = offsetY + jawRect.height * 1.1;
+
+        const dx = endX - startX;
+        const dy = endY - startY;
+        const length = Math.hypot(dx, dy);
+        const angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+
+        track.style.left = `${startX}px`;
+        track.style.top = `${startY}px`;
+        track.style.width = `${length}px`;
+        track.style.height = `4px`;
+        track.style.transformOrigin = "0 50%";
+        track.style.transform = `rotate(${angleDeg}deg)`;
+        track.style.borderRadius = "2px";
+
+        const fingerRect = finger.getBoundingClientRect();
+        const fingerHalfW = fingerRect.width / 2;
+        const fingerHalfH = fingerRect.height / 2;
+
+        let t = 0;
+
+        function setFingerAt(tParam) {
+            t = Math.min(1, Math.max(0, tParam));
+            const x = startX + dx * t;
+            const y = startY + dy * t;
+            finger.style.left = `${x}px`;
+            finger.style.top = `${y}px`;
+        }
+
+        setFingerAt(0);
+
+        function projectToSegment(px, py) {
+            const vx = dx;
+            const vy = dy;
+            const len2 = vx * vx + vy * vy || 1;
+            const tRaw = ((px - startX) * vx + (py - startY) * vy) / len2;
+            return Math.min(1, Math.max(0, tRaw));
+        }
+
+        function onPointerDown(e) {
+            isDragging = true;
+            finger.style.cursor = "grabbing";
+            e.preventDefault();
+        }
+
+        function onPointerUp() {
+            if (!isDragging) return;
+            isDragging = false;
+            finger.style.cursor = "grab";
+
+            if (t >= 0.999) {
+                swipeCount += 1;
+
+                if (swipeCount < 3) {
+                    setFingerAt(0);
+                } else {
+                    clearInterval(timer);
+                    score += 500;
+                    scoreboard.textContent = `Aura🔥: ${score}`;
+                    displayFeedback("+500 Aura 🔥", "correct");
+                    setTimeout(() => loadTextGame(), 1200);
+                }
+            }
+        }
+
+        function onPointerMove(e) {
+            if (!isDragging) return;
+
+            const pointX = (e.touches ? e.touches[0].clientX : e.clientX);
+            const pointY = (e.touches ? e.touches[0].clientY : e.clientY);
+
+            const sr = stage.getBoundingClientRect();
+            const localX = pointX - sr.left;
+            const localY = pointY - sr.top;
+
+            const tNew = projectToSegment(localX, localY);
+            setFingerAt(tNew);
+        }
+
+        finger.onmousedown = onPointerDown;
+        window.addEventListener("mouseup", onPointerUp);
+        window.addEventListener("mousemove", onPointerMove);
+
+        finger.ontouchstart = onPointerDown;
+        window.addEventListener("touchend", onPointerUp, { passive: false });
+        window.addEventListener("touchmove", onPointerMove, { passive: false });
+
+        function cleanup() {
+            window.removeEventListener("mouseup", onPointerUp);
+            window.removeEventListener("mousemove", onPointerMove);
+            window.removeEventListener("touchend", onPointerUp);
+            window.removeEventListener("touchmove", onPointerMove);
+        }
+
+        const onResize = () => {
+            cleanup();
+            layout();
+        };
+        window.addEventListener("resize", onResize, { once: true });
+    }
+
+    if (jaw.complete) {
+        requestAnimationFrame(layout);
+    } else {
+        jaw.onload = () => requestAnimationFrame(layout);
+    }
+}
+
