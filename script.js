@@ -27,28 +27,32 @@ function startCountdown(name) {
     welcome.textContent = `Welcome, ${name}! 🎖️`;
 
     const countdownMsg = document.createElement("p");
-    countdownMsg.textContent = "Training begins in ";
+    countdownMsg.classList.add("countdown-msg");
+    countdownMsg.textContent = "Training begins in...";
 
-    const countdownSpan = document.createElement("span");
+    const countdownSpan = document.createElement("div");
     countdownSpan.id = "countdown";
     countdownSpan.textContent = "5";
 
-    countdownMsg.appendChild(countdownSpan);
-
     gameContent.appendChild(welcome);
     gameContent.appendChild(countdownMsg);
+    gameContent.appendChild(countdownSpan);
 
     let countdown = 5;
     const interval = setInterval(() => {
         countdown--;
         if (countdown > 0) {
             countdownSpan.textContent = countdown;
+            countdownSpan.classList.remove("bounce");
+            void countdownSpan.offsetWidth; 
+            countdownSpan.classList.add("bounce");
         } else {
             clearInterval(interval);
             loadOhioGame();
         }
     }, 1000);
 }
+
 
 function displayFeedback(message, type = 'correct', duration = 4000) {
     const feedbackBox = document.getElementById('feedback-box');
@@ -151,7 +155,7 @@ function loadOhioGame() {
                     scoreboard.textContent = `Aura🔥: ${score}`;
 
                     state.style.fill = "green";
-                    displayFeedback("✅ Correct! Welcome to Ohio, recruit.", 'correct');
+                    displayFeedback("✅ Welcome to Ohio, recruit!", 'correct');
 
                     clearInterval(timer);
 
@@ -162,7 +166,7 @@ function loadOhioGame() {
 
                 } else {
                     state.style.fill = "red";
-                    displayFeedback("❌ Wrong! That's not Ohio.", 'wrong');
+                    displayFeedback("❌ That's not Ohio bro 💀", 'wrong');
                 }
             });
         });
@@ -386,10 +390,10 @@ function loadTextGame() {
         { abbr: "TFW", full: "That feeling when" },
         { abbr: "W", full: "Win" },
         { abbr: "TLDR", full: "Too long didn't read" },
-        { abbr: "pmo", full: "Piss me off / Put me on" },
+        { abbr: "pmo", full: ["Piss me off", "Put me on" ]},
         { abbr: "ICL", full: "I can't lie" },
-        { abbr: "ong", full: "Oh my God" },
-        { abbr: "smh", full: "Shaking my head" }
+        { abbr: "ong", full: "On God" },
+        { abbr: "smh", full: ["Shaking my head", "shake my head"]}
     ]);
 
     const scoreboard = document.createElement("div");
