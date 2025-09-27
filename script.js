@@ -111,7 +111,7 @@ function showEndScreen() {
     scoreDisplay.textContent = `Your final Aura🔥 score: ${score}`;
     scoreDisplay.style.fontSize = "1.5rem";
     scoreDisplay.style.fontWeight = "bold";
-    scoreDisplay.style.marginTop = "20px";
+    scoreDisplay.style.marginTop = "10px";
 
     const playAgainBtn = document.createElement("button");
     playAgainBtn.textContent = "Play Again";
@@ -138,6 +138,50 @@ function showEndScreen() {
 }
 
 function loadGame() {
+    gameContent.textContent = "";
+
+    const topBar = document.createElement("div");
+    topBar.id = "top-bar";
+    topBar.style.display = "flex";
+    topBar.style.justifyContent = "space-between";
+    topBar.style.alignItems = "center";
+    topBar.style.maxWidth = "600px";
+    topBar.style.margin = "20px auto 20px auto";
+    topBar.style.padding = "0 10px";
+
+    const scoreboard = document.createElement("div");
+    scoreboard.id = "scoreboard";
+    scoreboard.textContent = `Aura🔥: ${score}`;
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+    timerBox.textContent = "Time: 15";
+
+    topBar.appendChild(scoreboard);
+    topBar.appendChild(timerBox);
+    gameContent.appendChild(topBar);
+
+    const instructions = document.createElement("p");
+    instructions.id = "instructions";
+    instructions.classList.add("instructions");
+    instructions.style.textAlign = "center";
+    instructions.style.marginBottom = "20px";
+    gameContent.appendChild(instructions);
+
+    const feedbackBox = document.createElement("div");
+    feedbackBox.id = "feedback-box";
+    feedbackBox.style.textAlign = "center";
+    feedbackBox.style.marginBottom = "20px";
+    gameContent.appendChild(feedbackBox);
+
+    const gameContainer = document.createElement("div");
+    gameContainer.id = "game-container";
+    gameContent.appendChild(gameContainer);
+
+    function setInstructions(text) {
+        instructions.textContent = text;
+    }
+
     const miniGames = [
         loadMewingGame,
         loadTextGame,
@@ -158,8 +202,8 @@ function loadGame() {
         if (currentIndex < shuffledGames.length) {
             const gameFunc = shuffledGames[currentIndex];
             currentIndex++;
-            gameFunc();
-
+            // Pass the shared elements to the mini-game
+            gameFunc({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions });
         } else {
             showEndScreen();
         }
@@ -168,27 +212,18 @@ function loadGame() {
     window.onGameEnd = nextGame;
 
     nextGame();
+
+    return { scoreboard, timerBox, feedbackBox, setInstructions };
 }
 
 
 
-function loadOhioGame() {
-    gameContent.textContent = "";
 
-    const scoreboard = document.createElement("div");
-    scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Aura🔥: ${score}`;
 
-    const feedbackBox = document.createElement("div");
-    feedbackBox.id = "feedback-box";
+function loadOhioGame({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions }) {
+    gameContainer.textContent = "";
 
-    const timerBox = document.createElement("div");
-    timerBox.id = "timer-box";
-    timerBox.textContent = "Time: 15";
-
-    const instructions = document.createElement("p");
-    instructions.classList.add("instructions");
-    instructions.textContent = "Click on Ohio!";
+    setInstructions("Click on Ohio!");
 
     const object = document.createElement("object");
     object.id = "us-map";
@@ -200,11 +235,7 @@ function loadOhioGame() {
     object.style.display = "block";
     object.style.margin = "0 auto";
 
-    gameContent.appendChild(scoreboard);
-    gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(timerBox);
-    gameContent.appendChild(instructions);
-    gameContent.appendChild(object);
+    gameContainer.appendChild(object);
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("⏰ Time's up!", "wrong", 1000);
@@ -253,30 +284,16 @@ function loadOhioGame() {
 }
 
 
-function loadKneeSurgeryGame() {
-    gameContent.textContent = "";
+function loadKneeSurgeryGame({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions }) {
+    gameContainer.textContent = "";
 
-    const scoreboard = document.createElement("div");
-    scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Aura🔥: ${score}`;
+    setInstructions("Click the spot that needs surgery!");
 
-    const feedbackBox = document.createElement("div");
-    feedbackBox.id = "feedback-box";
 
-    const timerBox = document.createElement("div");
-    timerBox.id = "timer-box";
-    timerBox.textContent = "Time: 15";
-
-    const instructions = document.createElement("p");
-    instructions.classList.add("instructions");
-    instructions.textContent = "Click the spot that needs surgery!";
-
-    // Container
     const container = document.createElement("div");
     container.style.position = "relative";
     container.style.display = "inline-block";
 
-    // Body image
     const bodyImg = document.createElement("img");
     bodyImg.src = "assets/body.png";
     bodyImg.alt = "Body Outline";
@@ -286,13 +303,8 @@ function loadKneeSurgeryGame() {
     bodyImg.style.cursor = "pointer";
 
     container.appendChild(bodyImg);
-    gameContent.appendChild(scoreboard);
-    gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(timerBox);
-    gameContent.appendChild(instructions);
-    gameContent.appendChild(container);
+    gameContainer.appendChild(container);
 
-    // Knee targets in percentages
     const kneeTargets = [
         { x: 0.51, y: 0.70, width: 0.2, height: 0.1 },
         { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }
@@ -331,23 +343,10 @@ function loadKneeSurgeryGame() {
     });
 }
 
-function load67Game() {
-    gameContent.textContent = "";
+function load67Game({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions }) {
+    gameContainer.textContent = "";
 
-    const scoreboard = document.createElement("div");
-    scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Aura🔥: ${score}`;
-
-    const feedbackBox = document.createElement("div");
-    feedbackBox.id = "feedback-box";
-
-    const timerBox = document.createElement("div");
-    timerBox.id = "timer-box";
-    timerBox.textContent = "Time: 15";
-
-    const instructions = document.createElement("p");
-    instructions.classList.add("instructions");
-    instructions.textContent = "You know what to click.";
+    setInstructions("You know what to click.");
 
     const container = document.createElement("div");
     container.style.position = "relative";
@@ -359,11 +358,7 @@ function load67Game() {
     container.style.background = "#f0f0f0";
     container.style.cursor = "pointer";
 
-    gameContent.appendChild(scoreboard);
-    gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(timerBox);
-    gameContent.appendChild(instructions);
-    gameContent.appendChild(container);
+    gameContainer.appendChild(container);
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("Time's up", "wrong", 1000);
@@ -387,7 +382,7 @@ function load67Game() {
         numDiv.style.top = `${Math.random() * (container.clientHeight - 50)}px`;
         numDiv.style.left = `${Math.random() * (container.clientWidth - 50)}px`;
 
-        numDiv.vx = (Math.random() - 0.5) * 8; // faster
+        numDiv.vx = (Math.random() - 0.5) * 8; 
         numDiv.vy = (Math.random() - 0.5) * 8;
 
         container.appendChild(numDiv);
@@ -402,12 +397,12 @@ function load67Game() {
                     scoreboard.textContent = `Aura🔥: ${score}`;
                     displayFeedback("67 🔥", 'correct', 1000);
                     clearInterval(timer);
+                    clearInterval(movementInterval);
                     setTimeout(() => {
                         if (window.onGameEnd) window.onGameEnd();
                     }, 1000);
                 }
             } else {
-                numDiv.style.animation = "pop 0.5s ease forwards";
                 numDiv.style.color = "red";
                 displayFeedback("❌ Wrong number!", 'wrong', 1000);
                 setTimeout(() => numDiv.style.color = "black", 1000);
@@ -415,7 +410,7 @@ function load67Game() {
         });
     }
 
-    setInterval(() => {
+    const movementInterval = setInterval(() => {
         numbers.forEach(numDiv => {
             let top = parseFloat(numDiv.style.top);
             let left = parseFloat(numDiv.style.left);
@@ -453,8 +448,8 @@ function load67Game() {
 }
 
 
-function loadTextGame() {
-    gameContent.textContent = "";
+function loadTextGame({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions }) {
+    gameContainer.textContent = "";
 
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -481,22 +476,10 @@ function loadTextGame() {
         { abbr: "smh", full: ["Shaking my head", "shake my head"] }
     ]);
 
-    const scoreboard = document.createElement("div");
-    scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Aura🔥: ${score}`;
-
-    const feedbackBox = document.createElement("div");
-    feedbackBox.id = "feedback-box";
-
-    const timerBox = document.createElement("div");
-    timerBox.id = "timer-box";
-
     const container = document.createElement("div");
     container.id = "text-game-container";
 
-    const instructions = document.createElement("p");
-    instructions.classList.add("instructions");
-    instructions.textContent = "Write out what the abbreviations mean";
+    setInstructions("Write out what the abbreviations mean");
 
     const currentAbbr = document.createElement("div");
     currentAbbr.id = "current-abbr";
@@ -514,11 +497,7 @@ function loadTextGame() {
     container.appendChild(currentAbbr);
     container.appendChild(input);
 
-    gameContent.appendChild(scoreboard);
-    gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(timerBox);
-    gameContent.appendChild(instructions);
-    gameContent.appendChild(container);
+    gameContainer.appendChild(container);
 
     const timer = startTimer(20, timerBox, () => {
         displayFeedback("⏰ Time's up!", "wrong", 1000);
@@ -553,7 +532,7 @@ function loadTextGame() {
             currentAbbrIndex++;
 
             if (currentAbbrIndex >= textAbbreviations.length) {
-                clearInterval(interval);
+                clearInterval(timer);
                 displayFeedback("You're insane 🔥", "correct", 1000);
                 setTimeout(() => {
                     if (window.onGameEnd) window.onGameEnd();
@@ -568,23 +547,10 @@ function loadTextGame() {
     });
 }
 
-function loadMewingGame() {
-    gameContent.textContent = "";
+function loadMewingGame({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions }) {
+    gameContainer.textContent = "";
 
-    const scoreboard = document.createElement("div");
-    scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Aura🔥: ${score}`;
-
-    const feedbackBox = document.createElement("div");
-    feedbackBox.id = "feedback-box";
-
-    const timerBox = document.createElement("div");
-    timerBox.id = "timer-box";
-    timerBox.textContent = "Time: 15";
-
-    const instructions = document.createElement("p");
-    instructions.classList.add("instructions");
-    instructions.textContent = "🤫 x3";
+    setInstructions("🤫 x3");
 
     const stage = document.createElement("div");
     stage.id = "text-game-container";
@@ -593,11 +559,7 @@ function loadMewingGame() {
     stage.style.margin = "0 auto";
     stage.style.userSelect = "none";
 
-    gameContent.appendChild(scoreboard);
-    gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(timerBox);
-    gameContent.appendChild(instructions);
-    gameContent.appendChild(stage);
+    gameContainer.appendChild(stage);
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("You gotta practice your mewing bro", "wrong", 1000);
@@ -759,8 +721,8 @@ function loadMewingGame() {
     }
 }
 
-function loadSlangGame() {
-    gameContent.textContent = "";
+function loadSlangGame({ gameContainer, scoreboard, timerBox, feedbackBox, setInstructions }) {
+    gameContainer.textContent = "";
 
     const slangTerms = [
         { word: "Rizz", meaning: "Charm or smooth talking ability, usually when flirting" },
@@ -784,20 +746,7 @@ function loadSlangGame() {
         { word: "Doomscrolling", meaning: "Endlessly scrolling through reels and tiktoks" }
     ];
 
-    const scoreboard = document.createElement("div");
-    scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Aura🔥: ${score}`;
-
-    const feedbackBox = document.createElement("div");
-    feedbackBox.id = "feedback-box";
-
-    const timerBox = document.createElement("div");
-    timerBox.id = "timer-box";
-    timerBox.textContent = "Time: 15";
-
-    const instructions = document.createElement("p");
-    instructions.classList.add("instructions");
-    instructions.textContent = "Test your brainrot vocabulary";
+    setInstructions("Test your brainrot vocabulary");
 
     const question = document.createElement("div");
     question.id = "question-container";
@@ -811,12 +760,8 @@ function loadSlangGame() {
     cardsContainer.style.margin = "20px auto";
     cardsContainer.style.maxWidth = "500px";
 
-    gameContent.appendChild(scoreboard);
-    gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(timerBox);
-    gameContent.appendChild(instructions);
-    gameContent.appendChild(question);
-    gameContent.appendChild(cardsContainer);
+    gameContainer.appendChild(question);
+    gameContainer.appendChild(cardsContainer);
 
     let timer = startTimer(20, timerBox, () => {
         displayFeedback("Time’s up!", "wrong", 1000);
@@ -878,7 +823,7 @@ function loadSlangGame() {
                     scoreboard.textContent = `Aura🔥: ${score}`;
                     displayFeedback("+100 Aura 🔥", "correct", 500);
                 } else {
-                    card.style.background = "#f44336"; // red
+                    card.style.background = "#f44336"; 
                     displayFeedback("Wrong!", "wrong");
                 }
                 setTimeout(newRound, 500);
