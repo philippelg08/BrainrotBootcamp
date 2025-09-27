@@ -116,7 +116,7 @@ button {
 
 #scoreboard {
     position: absolute;
-    top: 30px;
+    top: 50px;
     right: 50px;
     background: white;
     padding: 8px 12px;
@@ -172,7 +172,7 @@ button {
 
 #timer-box {
     position: absolute;
-    top: 30px;
+    top: 50px;
     left: 50px;
     background: white;
     padding: 12px 12px;
