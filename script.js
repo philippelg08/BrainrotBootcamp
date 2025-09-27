@@ -146,7 +146,7 @@ function loadGame() {
     topBar.style.justifyContent = "space-between";
     topBar.style.alignItems = "center";
     topBar.style.maxWidth = "600px";
-    topBar.style.margin = "20px auto 20px auto";
+    topBar.style.margin = "15px auto 20px auto";
     topBar.style.padding = "0 10px";
 
     const scoreboard = document.createElement("div");
@@ -493,6 +493,7 @@ function loadTextGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIns
     input.type = "text";
     input.placeholder = "Type full text here...";
     input.autocomplete = "off";
+    input.maxLength = 50;
 
     container.appendChild(currentAbbr);
     container.appendChild(input);
