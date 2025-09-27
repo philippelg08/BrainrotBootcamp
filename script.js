@@ -147,7 +147,7 @@ function loadGame() {
     topBar.style.alignItems = "center";
     topBar.style.flexWrap = "wrap";
     topBar.style.justifyContent = "space-around";
-    topBar.style.padding = "0 10px";
+    topBar.style.padding = "0 5px";
 
     const scoreboard = document.createElement("div");
     scoreboard.id = "scoreboard";
@@ -166,6 +166,8 @@ function loadGame() {
     instructions.classList.add("instructions");
     instructions.style.textAlign = "center";
     instructions.style.marginBottom = "20px";
+    instructions.style.paddingLeft = "15px";
+    instructions.style.paddingRight = "15px";
     gameContent.appendChild(instructions);
 
     const feedbackBox = document.createElement("div");
@@ -384,7 +386,7 @@ function load67Game({ gameContainer, scoreboard, timerBox, feedbackBox, setInstr
         numDiv.style.top = `${Math.random() * (container.clientHeight - 50)}px`;
         numDiv.style.left = `${Math.random() * (container.clientWidth - 50)}px`;
 
-        numDiv.vx = (Math.random() - 0.5) * 8; 
+        numDiv.vx = (Math.random() - 0.5) * 8;
         numDiv.vy = (Math.random() - 0.5) * 8;
 
         container.appendChild(numDiv);
@@ -818,7 +820,7 @@ function loadSlangGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIn
                 }, 1000);
                 return;
             }
-            
+
 
             card.addEventListener("click", () => {
                 if (option.word === correct.word) {
@@ -827,7 +829,7 @@ function loadSlangGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIn
                     scoreboard.textContent = `Aura🔥: ${score}`;
                     displayFeedback("+100 Aura 🔥", "correct", 500);
                 } else {
-                    card.style.background = "#f44336"; 
+                    card.style.background = "#f44336";
                     displayFeedback("Wrong!", "wrong");
                 }
                 setTimeout(newRound, 500);
