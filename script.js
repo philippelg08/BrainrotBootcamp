@@ -147,7 +147,8 @@ function loadGame() {
     topBar.style.alignItems = "center";
     topBar.style.flexWrap = "wrap";
     topBar.style.justifyContent = "space-around";
-    topBar.style.padding = "0 5px";
+    topBar.style.padding = "0 10px";
+    topBar.style.marginTop = "15px";
 
     const scoreboard = document.createElement("div");
     scoreboard.id = "scoreboard";
@@ -166,8 +167,8 @@ function loadGame() {
     instructions.classList.add("instructions");
     instructions.style.textAlign = "center";
     instructions.style.marginBottom = "20px";
-    instructions.style.paddingLeft = "15px";
-    instructions.style.paddingRight = "15px";
+    instructions.style.paddingLeft = "30px";
+    instructions.style.paddingRight = "30px";
     gameContent.appendChild(instructions);
 
     const feedbackBox = document.createElement("div");
@@ -497,6 +498,8 @@ function loadTextGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIns
     input.type = "text";
     input.placeholder = "Type full text here...";
     input.autocomplete = "off";
+    input.style.paddingLeft = "16px"
+    input.style.paddingRight = "16px"
     input.maxLength = 50;
 
     container.appendChild(currentAbbr);
