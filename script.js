@@ -61,7 +61,7 @@ function displayFeedback(message, type = 'correct') {
 
     setTimeout(() => {
         feedbackBox.classList.remove('visible');
-    }, 1500);
+    }, 2000);
 }
 
 function loadOhioGame() {
@@ -69,10 +69,14 @@ function loadOhioGame() {
 
     const scoreboard = document.createElement("div");
     scoreboard.id = "scoreboard";
-    scoreboard.textContent = `Score: ${score}`;
+    scoreboard.textContent = `Aura🔥: ${score}`;
 
     const feedbackBox = document.createElement("div");
     feedbackBox.id = "feedback-box";
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+    timerBox.textContent = "Time: 15";
 
     const instructions = document.createElement("p");
     instructions.classList.add("instructions");
@@ -83,13 +87,25 @@ function loadOhioGame() {
     object.type = "image/svg+xml";
     object.data = "assets/us.svg";
 
+    // Add elements in order
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
-    gameContent.appendChild(object);
+    gameContent.appendChild(timerBox);
     gameContent.appendChild(instructions);
+    gameContent.appendChild(object);
+
+    let gameTime = 15;
+    const gameTimer = setInterval(() => {
+        gameTime--;
+        timerBox.textContent = `Time: ${gameTime}`;
+        if (gameTime <= 0) {
+            clearInterval(gameTimer);
+            displayFeedback("⏰ Time's up!", "wrong");
+            setTimeout(() => load67Game(), 1000);
+        }
+    }, 1000);
 
     object.addEventListener("load", () => {
-
         const svgDoc = object.contentDocument;
         const states = svgDoc.querySelectorAll("path");
 
@@ -107,15 +123,30 @@ function loadOhioGame() {
 
             state.addEventListener("click", () => {
                 if (state.id === "OH") {
-                    score++;
-                    scoreboard.textContent = `Score: ${score}`;
+                    score += 500;
+                    scoreboard.textContent = `Aura🔥: ${score}`;
                     
+                    state.style.fill = "green";
                     displayFeedback("✅ Correct! Welcome to Ohio, recruit.", 'correct');
-                    // ADD NEXT GAME
+
+                    clearInterval(gameTimer); 
+
+                    // Wait 1.5s so player sees the green highlight
+                    setTimeout(() => {
+                        load67Game();
+                    }, 2000);
+
                 } else {
+                    state.style.fill = "red";
                     displayFeedback("❌ Wrong! That's not Ohio.", 'wrong');
                 }
             });
         });
     });
+}
+
+function load67Game() {
+    gameContent.textContent = "";
+
+   
 }

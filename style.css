@@ -4,15 +4,17 @@ body {
     font-family: 'Inter', sans-serif;
     background: #f9f9f9;
     color: #222;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+}
   
-  .screen {
+.screen {
     text-align: center;
-  }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 50px; 
+}
   
   .title {
     font-size: 50px;
@@ -20,6 +22,10 @@ body {
     margin-bottom: 20px;
     color: #222;
   }
+
+  #title-screen {
+    justify-content: center; 
+}
   
   .general {
     image-rendering: pixelated;
@@ -75,8 +81,8 @@ body {
 
   #scoreboard {
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 30px;
+    right: 50px;
     background: white;
     padding: 8px 12px;
     border-radius: 8px;
@@ -118,4 +124,15 @@ body {
 #feedback-box.wrong {
     background-color: #f44336; 
     box-shadow: 0 0 20px rgba(244, 67, 54, 0.8); 
+}
+
+#timer-box {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
