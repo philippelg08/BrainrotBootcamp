@@ -50,7 +50,7 @@ function startCountdown(name) {
     }, 1000);
 }
 
-function displayFeedback(message, type = 'correct') {
+function displayFeedback(message, type = 'correct', duration = 4000) {
     const feedbackBox = document.getElementById('feedback-box');
     if (!feedbackBox) return;
 
@@ -61,7 +61,7 @@ function displayFeedback(message, type = 'correct') {
 
     setTimeout(() => {
         feedbackBox.classList.remove('visible');
-    }, 2000);
+    }, duration);
 }
 
 function loadOhioGame() {
@@ -101,7 +101,7 @@ function loadOhioGame() {
         if (gameTime <= 0) {
             clearInterval(gameTimer);
             displayFeedback("⏰ Time's up!", "wrong");
-            setTimeout(() => load67Game(), 1000);
+            setTimeout(() => loadKneeSurgeryGame(), 1000);
         }
     }, 1000);
 
@@ -125,15 +125,15 @@ function loadOhioGame() {
                 if (state.id === "OH") {
                     score += 500;
                     scoreboard.textContent = `Aura🔥: ${score}`;
-                    
+
                     state.style.fill = "green";
                     displayFeedback("✅ Correct! Welcome to Ohio, recruit.", 'correct');
 
-                    clearInterval(gameTimer); 
+                    clearInterval(gameTimer);
 
                     // Wait 1.5s so player sees the green highlight
                     setTimeout(() => {
-                        load67Game();
+                        loadKneeSurgeryGame();
                     }, 2000);
 
                 } else {
@@ -145,8 +145,167 @@ function loadOhioGame() {
     });
 }
 
+
+function loadKneeSurgeryGame() {
+    gameContent.textContent = "";
+
+    const scoreboard = document.createElement("div");
+    scoreboard.id = "scoreboard";
+    scoreboard.textContent = `Aura🔥: ${score}`;
+
+    const feedbackBox = document.createElement("div");
+    feedbackBox.id = "feedback-box";
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+    timerBox.textContent = "Time: 15";
+
+    const instructions = document.createElement("p");
+    instructions.classList.add("instructions");
+    instructions.textContent = "Click the spot that needs surgery!";
+
+    // Container
+    const container = document.createElement("div");
+    container.style.position = "relative";
+    container.style.display = "inline-block";
+
+    // Body image
+    const bodyImg = document.createElement("img");
+    bodyImg.src = "assets/body.png";
+    bodyImg.alt = "Body Outline";
+    bodyImg.id = "body-img";
+    bodyImg.style.width = "250px";
+    bodyImg.style.height = "auto";
+    bodyImg.style.cursor = "pointer";
+
+    container.appendChild(bodyImg); // append body first
+    gameContent.appendChild(scoreboard);
+    gameContent.appendChild(feedbackBox);
+    gameContent.appendChild(timerBox);
+    gameContent.appendChild(instructions);
+    gameContent.appendChild(container);
+
+    // Knee targets in percentages
+    const kneeTargets = [
+        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 }, // left knee
+        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  // right knee
+    ];
+
+    // Timer
+    let timeLeft = 15;
+    const timerInterval = setInterval(() => {
+        timeLeft--;
+        timerBox.textContent = `Time: ${timeLeft}`;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            displayFeedback("⏰ Time's up!", "wrong");
+            setTimeout(() => load67Game(), 1000);
+        }
+    }, 1000);
+
+    // Click detection
+    bodyImg.addEventListener("click", (e) => {
+        const rect = bodyImg.getBoundingClientRect();
+        const clickX = (e.clientX - rect.left) / rect.width;
+        const clickY = (e.clientY - rect.top) / rect.height;
+
+        const correct = kneeTargets.some(target => {
+            return clickX >= target.x &&
+                   clickX <= target.x + target.width &&
+                   clickY >= target.y &&
+                   clickY <= target.y + target.height;
+        });
+
+        if (correct) {
+            score += 500;
+            scoreboard.textContent = `Aura🔥: ${score}`;
+            displayFeedback("✅ Correct! Bro needs knee surgery", "correct", 2500);
+            clearInterval(timerInterval);
+            setTimeout(() => load67Game(), 2500);
+        } else {
+            displayFeedback("❌ Wrong! That's not the place", "wrong", 1500);
+        }
+    });
+}
+
 function load67Game() {
     gameContent.textContent = "";
 
-   
+    const scoreboard = document.createElement("div");
+    scoreboard.id = "scoreboard";
+    scoreboard.textContent = `Aura🔥: ${score}`;
+
+    const feedbackBox = document.createElement("div");
+    feedbackBox.id = "feedback-box";
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+    timerBox.textContent = "Time: 15";
+
+    const instructions = document.createElement("p");
+    instructions.classList.add("instructions");
+    instructions.textContent = "You know what to click.";
+
+    // Container
+    const container = document.createElement("div");
+    container.style.position = "relative";
+    container.style.display = "inline-block";
+
+    // Body image
+    const bodyImg = document.createElement("img");
+    bodyImg.src = "assets/body.png";
+    bodyImg.alt = "Body Outline";
+    bodyImg.id = "body-img";
+    bodyImg.style.width = "250px";
+    bodyImg.style.height = "auto";
+    bodyImg.style.cursor = "pointer";
+
+    container.appendChild(bodyImg); // append body first
+    gameContent.appendChild(scoreboard);
+    gameContent.appendChild(feedbackBox);
+    gameContent.appendChild(timerBox);
+    gameContent.appendChild(instructions);
+    gameContent.appendChild(container);
+
+    // Knee targets in percentages
+    const kneeTargets = [
+        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 }, // left knee
+        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  // right knee
+    ];
+
+    // Timer
+    let timeLeft = 15;
+    const timerInterval = setInterval(() => {
+        timeLeft--;
+        timerBox.textContent = `Time: ${timeLeft}`;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            displayFeedback("⏰ Time's up!", "wrong");
+            setTimeout(() => load67Game(), 1000);
+        }
+    }, 1000);
+
+    // Click detection
+    bodyImg.addEventListener("click", (e) => {
+        const rect = bodyImg.getBoundingClientRect();
+        const clickX = (e.clientX - rect.left) / rect.width;
+        const clickY = (e.clientY - rect.top) / rect.height;
+
+        const correct = kneeTargets.some(target => {
+            return clickX >= target.x &&
+                   clickX <= target.x + target.width &&
+                   clickY >= target.y &&
+                   clickY <= target.y + target.height;
+        });
+
+        if (correct) {
+            score += 500;
+            scoreboard.textContent = `Aura🔥: ${score}`;
+            displayFeedback("✅ Correct! Bro needs knee surgery", "correct", 2500);
+            clearInterval(timerInterval);
+            setTimeout(() => load67Game(), 2500);
+        } else {
+            displayFeedback("❌ Wrong! That's not the place", "wrong", 1500);
+        }
+    });
 }
