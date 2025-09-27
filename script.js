@@ -93,7 +93,44 @@ function startTimer(duration, display, onTimeUp) {
 }
 
 function showEndScreen() {
+    gameContent.textContent = "";
 
+    const endScreen = document.createElement("div");
+    endScreen.style.textAlign = "center";
+    endScreen.style.marginTop = "100px";
+
+    const title = document.createElement("h1");
+    title.textContent = "Well done, recruit";
+
+    const scoreDisplay = document.createElement("p");
+    scoreDisplay.textContent = `Your final Aura🔥 score: ${score}`;
+    scoreDisplay.style.fontSize = "1.5rem";
+    scoreDisplay.style.fontWeight = "bold";
+    scoreDisplay.style.marginTop = "20px";
+
+    const playAgainBtn = document.createElement("button");
+    playAgainBtn.textContent = "Play Again";
+    playAgainBtn.style.marginTop = "40px";
+    playAgainBtn.style.padding = "15px 30px";
+    playAgainBtn.style.fontSize = "1.2rem";
+    playAgainBtn.style.cursor = "pointer";
+    playAgainBtn.style.borderRadius = "10px";
+    playAgainBtn.style.border = "none";
+    playAgainBtn.style.background = "#4CAF50";
+    playAgainBtn.style.color = "white";
+
+    playAgainBtn.addEventListener("click", () => {
+        score = 0;          
+        gameContent.textContent = ""; 
+        startMiniGameSequence();     
+    });
+
+
+    endScreen.appendChild(title);
+    endScreen.appendChild(scoreDisplay);
+    endScreen.appendChild(playAgainBtn);
+
+    gameContent.appendChild(endScreen);
 }
 
 function loadGame() {
@@ -167,7 +204,8 @@ function loadOhioGame() {
 
     const timer = startTimer(15, timerBox, () => {
         displayFeedback("⏰ Time's up!", "wrong");
-        setTimeout(() => loadKneeSurgeryGame(), 1000);
+        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        }, 1000);
     });
 
     object.addEventListener("load", () => {
@@ -192,17 +230,17 @@ function loadOhioGame() {
                     scoreboard.textContent = `Aura🔥: ${score}`;
 
                     state.style.fill = "green";
-                    displayFeedback("+500 Aura 🔥", 'correct');
+                    displayFeedback("+500 Aura🔥", 'correct', 1000);
 
                     clearInterval(timer);
 
                     setTimeout(() => {
-                        loadKneeSurgeryGame();
+                        if (window.onGameEnd) window.onGameEnd();
                     }, 2000);
 
                 } else {
                     state.style.fill = "red";
-                    displayFeedback("❌ That's not Ohio bro 💀", 'wrong');
+                    displayFeedback("❌ That's not Ohio bro 💀", 'wrong', 1000);
                 }
             });
         });
@@ -242,7 +280,7 @@ function loadKneeSurgeryGame() {
     bodyImg.style.height = "auto";
     bodyImg.style.cursor = "pointer";
 
-    container.appendChild(bodyImg); // append body first
+    container.appendChild(bodyImg); 
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
     gameContent.appendChild(timerBox);
@@ -251,13 +289,14 @@ function loadKneeSurgeryGame() {
 
     // Knee targets in percentages
     const kneeTargets = [
-        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 }, // left knee
-        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  // right knee
+        { x: 0.51, y: 0.70, width: 0.2, height: 0.1 }, 
+        { x: 0.26, y: 0.70, width: 0.2, height: 0.1 }  
     ];
 
     const timer = startTimer(15, timerBox, () => {
-        displayFeedback("⏰ Time's up!", "wrong");
-        setTimeout(() => load67Game(), 1000);
+        displayFeedback("⏰ Time's up!", "wrong", 1000);
+        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        }, 1000);
     });
 
     bodyImg.addEventListener("click", (e) => {
@@ -275,11 +314,12 @@ function loadKneeSurgeryGame() {
         if (correct) {
             score += 500;
             scoreboard.textContent = `Aura🔥: ${score}`;
-            displayFeedback("+500 Aura 🔥", "correct", 2500);
+            displayFeedback("+500 Aura 🔥", "correct", 1000);
             clearInterval(timer);
-            setTimeout(() => load67Game(), 2500);
+            setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+            }, 1000);
         } else {
-            displayFeedback("❌ Wrong! That's not the place", "wrong", 1500);
+            displayFeedback("❌ Wrong! That's not the place", "wrong", 1000);
         }
     });
 }
@@ -319,8 +359,9 @@ function load67Game() {
     gameContent.appendChild(container);
 
     const timer = startTimer(15, timerBox, () => {
-        displayFeedback("+500 Aura 🔥", "wrong");
-        setTimeout(() => loadTextGame(), 1000);
+        displayFeedback("Time's up", "wrong", 1000);
+        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        }, 1000);
     });
 
     const targetNumbers = [6, 7];
@@ -351,14 +392,15 @@ function load67Game() {
                 if (currentIndex === targetNumbers.length) {
                     score += 500;
                     scoreboard.textContent = `Aura🔥: ${score}`;
-                    displayFeedback("Hell yeah 🔥", 'correct');
+                    displayFeedback("67 🔥", 'correct', 1000);
                     clearInterval(timer);
-                    setTimeout(() => loadTextGame(), 2000);
+                    setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+                    }, 2000);
                 }
             } else {
                 numDiv.style.animation = "pop 0.5s ease forwards";
                 numDiv.style.color = "red";
-                displayFeedback("❌ Wrong number!", 'wrong');
+                displayFeedback("❌ Wrong number!", 'wrong', 1000);
                 setTimeout(() => numDiv.style.color = "black", 1000);
             }
         });
@@ -470,8 +512,9 @@ function loadTextGame() {
     gameContent.appendChild(container);
 
     const timer = startTimer(20, timerBox, () => {
-        displayFeedback("⏰ Time's up!", "wrong");
-        setTimeout(() => loadMewingGame(), 1000);
+        displayFeedback("⏰ Time's up!", "wrong", 1000);
+        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        }, 1000);
     });
 
     let currentAbbrIndex = 0;
@@ -501,8 +544,9 @@ function loadTextGame() {
 
             if (currentAbbrIndex >= textAbbreviations.length) {
                 clearInterval(interval);
-                displayFeedback("You're insane 🔥", "correct", 2000);
-                setTimeout(() => loadMewingGame(), 2000);
+                displayFeedback("You're insane 🔥", "correct", 500);
+                setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+                }, 2000);
             } else {
                 showNextAbbr();
             }
@@ -545,8 +589,9 @@ function loadMewingGame() {
     gameContent.appendChild(stage);
 
     const timer = startTimer(15, timerBox, () => {
-        displayFeedback("You gotta practice your mewing bro", "wrong");
-        setTimeout(() => loadTextGame(), 1000);
+        displayFeedback("You gotta practice your mewing bro", "wrong", 1000);
+        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        }, 1000);
     });
     const jaw = document.createElement("img");
     jaw.src = "assets/jaw.png";
@@ -652,7 +697,8 @@ function loadMewingGame() {
                     score += 500;
                     scoreboard.textContent = `Aura🔥: ${score}`;
                     displayFeedback("+500 Aura 🔥", "correct", 2500);
-                    setTimeout(() => loadSlangGame(), 1200);
+                    setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+                    }, 1200);
                 }
             }
         }
@@ -759,8 +805,9 @@ function loadSlangGame() {
     gameContent.appendChild(cardsContainer);
 
     let timer = startTimer(20, timerBox, () => {
-        displayFeedback("Time’s up!", "wrong");
-        setTimeout(() => loadTextGame(), 2000);
+        displayFeedback("Time’s up!", "wrong", 1000);
+        setTimeout(() => {if (window.onGameEnd) window.onGameEnd();
+        }, 2000);
     });
 
     function newRound() {
@@ -790,6 +837,7 @@ function loadSlangGame() {
             card.style.cursor = "pointer";
             card.style.background = "white";
             card.style.transition = "0.3s";
+            card.style.minHeight = "80px";
 
             card.addEventListener("click", () => {
                 if (option.word === correct.word) {
@@ -797,7 +845,6 @@ function loadSlangGame() {
                     score += 100;
                     scoreboard.textContent = `Aura🔥: ${score}`;
                     displayFeedback("+100 Aura 🔥", "correct", 1000);
-                    newRound();
                 } else {
                     card.style.background = "#f44336"; // red
                     displayFeedback("Wrong!", "wrong");
@@ -808,7 +855,7 @@ function loadSlangGame() {
             cardsContainer.appendChild(card);
         });
     }
-
+    newRound();
 }
 
 
