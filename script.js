@@ -1,3 +1,7 @@
+import { inject } from "@vercel/analytics";
+
+inject();
+
 let score = 0;
 
 const startBtn = document.getElementById("start-btn");
