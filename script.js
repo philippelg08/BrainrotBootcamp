@@ -525,14 +525,18 @@ function loadTextGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIns
     showNextAbbr();
 
     input.addEventListener("input", () => {
-        const userInput = input.value.trim().toLowerCase();
+        function normalize(str) {
+            return str.trim().toLowerCase().replace(/’/g, "'");
+        }
+
+        const userInputNorm = normalize(input.value);
         const fullValue = textAbbreviations[currentAbbrIndex].full;
 
-        const validAnswers = Array.isArray(fullValue)
-            ? fullValue.map(v => v.toLowerCase())
-            : [fullValue.toLowerCase()];
+        const validAnswersNorm = Array.isArray(fullValue)
+            ? fullValue.map(v => normalize(v))
+            : [normalize(fullValue)];
 
-        if (validAnswers.includes(userInput)) {
+        if (validAnswersNorm.includes(userInputNorm)) {
             score += 200;
             scoreboard.textContent = `Aura🔥: ${score}`;
             input.value = "";
@@ -548,7 +552,7 @@ function loadTextGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIns
             } else {
                 showNextAbbr();
             }
-        } else if (userInput.length >= (Array.isArray(fullValue) ? Math.max(...fullValue.map(v => v.length)) : fullValue.length)) {
+        } else if (userInputNorm.length >= (Array.isArray(fullValue) ? Math.max(...fullValue.map(v => v.length)) : fullValue.length)) {
             input.style.borderColor = "red";
             setTimeout(() => input.style.borderColor = "#222", 500);
         }
