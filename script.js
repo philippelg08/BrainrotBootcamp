@@ -311,7 +311,7 @@ function load67Game() {
                 if (currentIndex === targetNumbers.length) {
                     score += 500;
                     scoreboard.textContent = `Aura🔥: ${score}`;
-                    displayFeedback("🎉 Nice one bro", 'correct');
+                    displayFeedback("Hell yeah 🔥", 'correct');
                     clearInterval(timer);
                     setTimeout(() => loadTextGame(), 2000);
                 }
@@ -361,5 +361,107 @@ function load67Game() {
         });
     }, 20);
     
-    
 }    
+
+
+function loadTextGame() {
+    gameContent.textContent = "";
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }    
+
+    const textAbbreviations = shuffleArray([
+        { abbr: "FYP", full: "For You Page" },
+        { abbr: "GRWM", full: "Get ready with me" },
+        { abbr: "IYKYK", full: "If you know you know" },
+        { abbr: "L", full: "Loss" },
+        { abbr: "MFW", full: "My face when" },
+        { abbr: "NPC", full: "Non playable character" },
+        { abbr: "POV", full: "Point of view" },
+        { abbr: "TFW", full: "That feeling when" },
+        { abbr: "W", full: "Win" },
+        { abbr: "TLDR", full: "Too long didn't read" },
+        { abbr: "pmo", full: "Piss me off / Put me on" },
+        { abbr: "ICL", full: "I can't lie" },
+        { abbr: "ong", full: "Oh my God" },
+        { abbr: "smh", full: "Shaking my head" }
+    ]);
+
+    const scoreboard = document.createElement("div");
+    scoreboard.id = "scoreboard";
+    scoreboard.textContent = `Aura🔥: ${score}`;
+
+    const feedbackBox = document.createElement("div");
+    feedbackBox.id = "feedback-box";
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+
+    const container = document.createElement("div");
+    container.id = "text-game-container";
+    
+    const currentAbbr = document.createElement("div");
+    currentAbbr.id = "current-abbr";
+    currentAbbr.style.fontSize = "2rem";
+    currentAbbr.style.fontWeight = "bold";
+    currentAbbr.style.marginBottom = "10px";
+    currentAbbr.style.textAlign = "center";
+
+    const input = document.createElement("input");
+    input.id = "text-input";
+    input.type = "text";
+    input.placeholder = "Type full text here...";
+    input.autocomplete = "off";
+
+    container.appendChild(currentAbbr);
+    container.appendChild(input);
+
+    gameContent.appendChild(scoreboard);
+    gameContent.appendChild(feedbackBox);
+    gameContent.appendChild(timerBox);
+    gameContent.appendChild(container);
+
+    const timer = startTimer(20, timerBox, () => {
+        displayFeedback("⏰ Time's up!", "wrong");
+        setTimeout(() => loadTextGame(), 1000);
+    });
+
+    let currentAbbrIndex = 0;
+
+    function showNextAbbr() {
+        if (currentAbbrIndex >= textAbbreviations.length) return;
+        currentAbbr.textContent = textAbbreviations[currentAbbrIndex].abbr;
+        currentAbbr.style.animation = "popIn 0.3s ease forwards";
+    }
+
+    showNextAbbr();
+
+    input.addEventListener("input", () => {
+        const userInput = input.value.trim().toLowerCase();
+        const correctText = textAbbreviations[currentAbbrIndex].full.toLowerCase();
+
+        if (userInput === correctText) {
+            score += 200;
+            scoreboard.textContent = `Aura🔥: ${score}`;
+            input.value = "";
+            displayFeedback("✅ Correct!", "correct", 800);
+            currentAbbrIndex++;
+            
+            if (currentAbbrIndex >= textAbbreviations.length) {
+                clearInterval(interval);
+                displayFeedback("🎉 All done!", "correct", 2000);
+                setTimeout(() => loadNextGame(), 2000);
+            } else {
+                showNextAbbr();
+            }
+        } else if (userInput.length >= correctText.length) {
+            input.style.borderColor = "red";
+            setTimeout(() => input.style.borderColor = "#222", 500);
+        }
+    });
+}
