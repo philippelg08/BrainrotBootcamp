@@ -48,13 +48,13 @@ function startCountdown(name) {
             countdownSpan.classList.add("bounce");
         } else {
             clearInterval(interval);
-            loadMewingGame();
+            loadGame();
         }
     }, 1000);
 }
 
 
-function displayFeedback(message, type = 'correct', duration = 4000) {
+function displayFeedback(message, type = 'correct', duration) {
     const feedbackBox = document.getElementById('feedback-box');
     if (!feedbackBox) return;
 
@@ -92,6 +92,44 @@ function startTimer(duration, display, onTimeUp) {
     return interval;
 }
 
+function showEndScreen() {
+
+}
+
+function loadGame() {
+    const miniGames = [
+        loadMewingGame,
+        loadTextGame,
+        loadSlangGame,
+        load67Game,
+        loadKneeSurgeryGame,
+        loadOhioGame
+    ];
+
+    const shuffledGames = miniGames
+        .map(g => ({ game: g, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(obj => obj.game);
+
+    let currentIndex = 0;
+
+    function nextGame() {
+        if (currentIndex < shuffledGames.length) {
+            const gameFunc = shuffledGames[currentIndex];
+            currentIndex++;
+            gameFunc();
+
+        } else {
+            showEndScreen();
+        }
+    }
+
+    window.onGameEnd = nextGame;
+
+    nextGame();
+}
+
+
 
 function loadOhioGame() {
     gameContent.textContent = "";
@@ -121,7 +159,6 @@ function loadOhioGame() {
     object.style.display = "block";
     object.style.margin = "0 auto";
 
-    // Add elements in order
     gameContent.appendChild(scoreboard);
     gameContent.appendChild(feedbackBox);
     gameContent.appendChild(timerBox);
@@ -159,7 +196,6 @@ function loadOhioGame() {
 
                     clearInterval(timer);
 
-                    // Wait 1.5s so player sees the green highlight
                     setTimeout(() => {
                         loadKneeSurgeryGame();
                     }, 2000);
@@ -337,11 +373,9 @@ function load67Game() {
             const containerWidth = container.clientWidth;
             const containerHeight = container.clientHeight;
 
-            // Update position
             top += numDiv.vy;
             left += numDiv.vx;
 
-            // Bounce off edges
             if (top <= 0) {
                 top = 0;
                 numDiv.vy *= -1;
@@ -458,7 +492,7 @@ function loadTextGame() {
             ? fullValue.map(v => v.toLowerCase())
             : [fullValue.toLowerCase()];
 
-        if (userInput === correctText) {
+        if (validAnswers.includes(userInput)) {
             score += 200;
             scoreboard.textContent = `Aura🔥: ${score}`;
             input.value = "";
@@ -491,6 +525,7 @@ function loadMewingGame() {
 
     const timerBox = document.createElement("div");
     timerBox.id = "timer-box";
+    timerBox.textContent = "Time: 15";
 
     const instructions = document.createElement("p");
     instructions.classList.add("instructions");
@@ -616,8 +651,8 @@ function loadMewingGame() {
                     clearInterval(timer);
                     score += 500;
                     scoreboard.textContent = `Aura🔥: ${score}`;
-                    displayFeedback("+500 Aura 🔥", "correct");
-                    setTimeout(() => loadTextGame(), 1200);
+                    displayFeedback("+500 Aura 🔥", "correct", 2500);
+                    setTimeout(() => loadSlangGame(), 1200);
                 }
             }
         }
@@ -664,4 +699,116 @@ function loadMewingGame() {
         jaw.onload = () => requestAnimationFrame(layout);
     }
 }
+
+function loadSlangGame() {
+    gameContent.textContent = "";
+
+    const slangTerms = [
+        { word: "Skibidi", meaning: "A nonsense word that can mean anything—good, bad, silly, or cool—depending on the vibe" },
+        { word: "Rizz", meaning: "Charm or smooth talking ability, usually when flirting" },
+        { word: "Cap", meaning: "A lie or exaggeration" },
+        { word: "Bussin", meaning: "Really tasty or amazing (often about food)" },
+        { word: "Goofy ahh", meaning: "Ridiculously silly or dumb" },
+        { word: "Fanum tax", meaning: "Stealing food from your friends as a joke" },
+        { word: "Delulu", meaning: "Being totally delusional or unrealistic" },
+        { word: "Alpha", meaning: "Leader" },
+        { word: "Beta", meaning: "Follower" },
+        { word: "Sigma", meaning: "Lone wolf" },
+        { word: "Vibe check", meaning: "Judging the mood or energy of a situation/person" },
+        { word: "Sus", meaning: "Suspicious or shady" },
+        { word: "Slaps", meaning: "Something that hits hard in a good way (like music)" },
+        { word: "Cringe", meaning: "Embarrassing or awkward" },
+        { word: "Grindset", meaning: "Obsessive hustle/work mentality" },
+        { word: "Looksmaxxing", meaning: "Trying hard to improve physical looks, sometimes extreme" },
+        { word: "Goated", meaning: "The greatest, legendary, the best" },
+        { word: "Simp", meaning: "Someone who overdoes it for their crush or partner" },
+        { word: "Crash out", meaning: "Acting reckless or losing control" },
+        { word: "Doomscrolling", meaning: "Endlessly scrolling through bad or depressing news" }
+    ];
+
+    const scoreboard = document.createElement("div");
+    scoreboard.id = "scoreboard";
+    scoreboard.textContent = `Aura🔥: ${score}`;
+
+    const feedbackBox = document.createElement("div");
+    feedbackBox.id = "feedback-box";
+
+    const timerBox = document.createElement("div");
+    timerBox.id = "timer-box";
+    timerBox.textContent = "Time: 15";
+
+    const instructions = document.createElement("p");
+    instructions.classList.add("instructions");
+    instructions.textContent = "Test your brainrot vocabulary";
+
+    const question = document.createElement("div");
+    question.id = "question-container";
+
+    const cardsContainer = document.createElement("div");
+    cardsContainer.id = "cards-container";
+    cardsContainer.style.display = "grid";
+    cardsContainer.style.gridTemplateColumns = "1fr 1fr";
+    cardsContainer.style.gap = "15px";
+    cardsContainer.style.marginTop = "20px";
+
+    gameContent.appendChild(scoreboard);
+    gameContent.appendChild(feedbackBox);
+    gameContent.appendChild(timerBox);
+    gameContent.appendChild(instructions);
+    gameContent.appendChild(question);
+    gameContent.appendChild(cardsContainer);
+
+    let timer = startTimer(20, timerBox, () => {
+        displayFeedback("Time’s up!", "wrong");
+        setTimeout(() => loadTextGame(), 2000);
+    });
+
+    function newRound() {
+        cardsContainer.textContent = "";
+
+        const correct = slangTerms[Math.floor(Math.random() * slangTerms.length)];
+        question.textContent = correct.word;
+
+        let wrongChoices = slangTerms
+            .filter(s => s.word !== correct.word)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+
+        let options = [...wrongChoices, correct].sort(() => 0.5 - Math.random());
+
+        options.forEach(option => {
+            const card = document.createElement("div");
+            card.textContent = option.meaning;
+            card.classList.add("card");
+            card.style.display = "flex";             
+            card.style.alignItems = "center";        
+            card.style.justifyContent = "center";     
+            card.style.textAlign = "center";  
+            card.style.padding = "15px";
+            card.style.border = "2px solid #333";
+            card.style.borderRadius = "10px";
+            card.style.cursor = "pointer";
+            card.style.background = "white";
+            card.style.transition = "0.3s";
+
+            card.addEventListener("click", () => {
+                if (option.word === correct.word) {
+                    card.style.background = "#4CAF50"; 
+                    score += 100;
+                    scoreboard.textContent = `Aura🔥: ${score}`;
+                    displayFeedback("+100 Aura 🔥", "correct", 1000);
+                    newRound();
+                } else {
+                    card.style.background = "#f44336"; // red
+                    displayFeedback("Wrong!", "wrong");
+                }
+                setTimeout(newRound, 1000);
+            });
+
+            cardsContainer.appendChild(card);
+        });
+    }
+
+}
+
 
