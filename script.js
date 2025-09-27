@@ -561,7 +561,7 @@ function loadTextGame() {
             } else {
                 showNextAbbr();
             }
-        } else if (userInput.length >= correctText.length) {
+        } else if (userInput.length >= (Array.isArray(fullValue) ? Math.max(...fullValue.map(v => v.length)) : fullValue.length)) {
             input.style.borderColor = "red";
             setTimeout(() => input.style.borderColor = "#222", 500);
         }
