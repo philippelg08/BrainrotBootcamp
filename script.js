@@ -756,6 +756,8 @@ function loadSlangGame({ gameContainer, scoreboard, timerBox, feedbackBox, setIn
         { word: "Goated", meaning: "The greatest, legendary, the best" },
         { word: "Simp", meaning: "Someone who overdoes it for their crush or partner" },
         { word: "Crash out", meaning: "Acting reckless or losing control" },
+        { word: "Mogging", meaning: "Making someone look worse by comparison" },
+        { word: "Aura Farming", meaning: "Doing things to look cool and gain validation" },
         { word: "Doomscrolling", meaning: "Endlessly scrolling through reels and tiktoks" }
     ];
 
